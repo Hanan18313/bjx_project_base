@@ -1,0 +1,58 @@
+import { modules } from './index';
+import { IRootState } from './types';
+import { CommitOptions, DispatchOptions, Store as VuexStore } from 'vuex';
+
+type Modules = typeof modules;
+
+type GetMutation<T> = T extends { mutations: infer G } ? G : never;
+type GetMutations<T> = {
+  [K in keyof T]: GetMutation<T[K]>
+}
+type mutationObj = GetMutations<Modules>
+
+type GetAction<T> = T extends { actions: infer G } ? G : never;
+type GetActions<T> = {
+  [K in keyof T]: GetAction<T[K]>
+}
+type actionObj = GetActions<Modules>
+
+type GetGetter<T> = T extends { getter: infer G } ? G : never;
+type GetGetters<T> = {
+  [K in keyof T]: GetGetter<T[K]>
+}
+type getterObj = GetGetters<Modules>
+
+type AddPrefix<prefix, keys> = `${prefix & string}/${keys & string}`
+type GetKey<T, K> = AddPrefix<K, keyof T>
+type GetKeys<T> = {
+  [K in keyof T]: GetKey<T[K], K>
+}[keyof T]
+type SS = GetKeys<mutationObj>
+
+// 获取当前模块下每个函数的返回值
+type GetFun<T, A, B> = T[A & keyof T][B & keyof T[A & keyof T]]
+type GetMethod<T> = {
+  [K in GetKeys<T>]: K extends `${infer A}/${infer B}` ? GetFun<T, A, B> : unknown
+}
+
+type GetMutationsFunc = GetMethod<mutationObj>
+type GetActionsFunc = GetMethod<actionObj>
+type GetGettersFunc = GetMethod<getterObj>
+
+export type CommonStore = Omit<VuexStore<IRootState>, 'commit' | 'getters' | 'dispatch'> & {
+  commit<K extends keyof GetMutationsFunc, P extends Parameters<GetMutationsFunc[K]>[1]>(
+    key: K,
+    payload?: P,
+    options?: CommitOptions
+  ): ReturnType<GetMutationsFunc[K]>
+} & {
+  getters: {
+    [K in keyof GetGettersFunc]: ReturnType<GetGettersFunc[K]>
+  }
+} & {
+  dispatch<K extends keyof GetActionsFunc>(
+    key: K,
+    payload?: Parameters<GetActionsFunc[K]>[1],
+    options?: DispatchOptions
+  ): ReturnType<GetActionsFunc[K]>
+}
