@@ -28,3 +28,4 @@ yarn lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 # bjx_project_base
+# bjx_project_base
