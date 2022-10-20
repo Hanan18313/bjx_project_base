@@ -1,77 +1,42 @@
+<template>
+  <ConfigProvider :theme-vars="{ blue: '#6476FF', navBarArrowSize: '1.4rem' }">
+    <Suspense>
+      <template #default>
+        <router-view v-slot="{ Component, route }">
+          <keep-alive>
+            <component
+              v-if="route.meta && route.meta.keepAlive"
+              :is="Component"
+              :key="route.meta.usePathKey ? route.fullPath : undefined"
+            />
+          </keep-alive>
+          <component
+            v-if="!(route.meta && route.meta.keepAlive)"
+            :is="Component"
+            :key="route.meta.usePathKey ? route.fullPath : undefined"
+          />
+        </router-view>
+      </template>
+      <template #fallback>
+        <div style="height: 600px; background: blue;"></div>
+      </template>
+    </Suspense>
+  </ConfigProvider>
+</template>
+
 <script lang="ts">
-import {
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-} from '@ant-design/icons-vue';
-import { defineComponent, ref, computed } from 'vue';
-import { useStore } from 'vuex';
-import { key } from '@/store';
+import { ConfigProvider } from 'ant-design-vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
+  name: '',
   components: {
-    UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-  },
-  setup() {
-    const store = useStore(key);
-    const commonName = computed(() => store.state.common.commonName);
-    const handleClick = () => {
-      store.commit('common/setCommonName', Math.random());
-    };
-    return {
-      selectedKeys: ref<string[]>(['1']),
-      collapsed: ref<boolean>(false),
-      handleClick,
-      commonName,
-    };
+    ConfigProvider,
   },
 });
-</script>
 
-<template>
-  <a-layout class="section">
-    <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
-      <div class="logo" />
-      <a-menu theme="dark" mode="inline" v-model:selectedKeys="selectedKeys">
-        <a-menu-item key="1">
-          <user-outlined />
-          <span>nav 1</span>
-        </a-menu-item>
-        <a-menu-item key="2">
-          <video-camera-outlined />
-          <span>nav 2</span>
-        </a-menu-item>
-        <a-menu-item key="3">
-          <upload-outlined />
-          <span>nav 3</span>
-        </a-menu-item>
-      </a-menu>
-    </a-layout-sider>
-    <a-layout>
-      <a-layout-header style="background: #fff; padding: 0">
-        <menu-unfold-outlined
-          v-if="collapsed"
-          class="trigger"
-          @click="() => (collapsed = !collapsed)"
-        />
-        <menu-fold-outlined v-else class="trigger" @click="() => (collapsed = !collapsed)" />
-      </a-layout-header>
-      <a-layout-content
-        :style="{ margin: '24px 16px', padding: '24px', background: '#fff', minHeight: '280px' }"
-      >
-        Content
-        {{commonName}}
-        <a-button @click="handleClick">点击</a-button>
-      </a-layout-content>
-    </a-layout>
-  </a-layout>
-</template>
+console.log(22222);
+</script>
 
 <style>
 #app {

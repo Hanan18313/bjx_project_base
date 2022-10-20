@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "eslint src --fix --ext .vue, --ext .ts && vue-cli-service serve --port=3005",
+    "start": "eslint src --fix --ext .vue, --ext .ts && vue-cli-service serve --port=3005",
+    "test": "vue-cli-service build",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"

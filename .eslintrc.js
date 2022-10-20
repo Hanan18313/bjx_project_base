@@ -20,6 +20,7 @@ module.exports = {
         2,
         { MemberExpression: 0, SwitchCase: 1, ignoredNodes: ['TemplateLiteral'] },
     ], // 强制使用一致的缩进'
+    'class-methods-use-this': 0,
     'quotes': ['error', 'single'],
     'comma-dangle': ['error', 'always-multiline'], // 要求或禁止末尾逗号
     'object-curly-spacing': ['error', 'always'], // 强制在大括号中使用一致的空格
@@ -40,10 +41,14 @@ module.exports = {
     'no-var': 'off',  // 禁止使用var
     'strict': 'off', // 严格模式
     'semi': [2, 'always'],//语句强制分号结尾
-    'no-trailing-spaces': 2,//一行结束后面不要有空格
     'import/prefer-default-export': 'off',
     '@typescript-eslint/no-explicit-any': ['off'],
-    'max-len' : ["error", 300] 
+    'max-len' : ["error", 300] ,
+    'vue/multi-word-component-names': 'warn',
+    '@typescript-eslint/ban-ts-comment': 'warn',
+    'no-underscore-dangle': 'off', // 允许使用下划线
+    "no-param-reassign": 0,
+    'no-new': 0,
   },
   overrides: [
     {

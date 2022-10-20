@@ -1,6 +1,7 @@
 import { createApp, ComponentPublicInstance } from 'vue';
 import antd from 'ant-design-vue';
-import App from './App.vue';
+// import App from './App.vue';
+import App from './App';
 import router from './router';
 import store, { key } from './store';
 import './antd.less';
