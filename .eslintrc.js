@@ -44,11 +44,13 @@ module.exports = {
     'import/prefer-default-export': 'off',
     '@typescript-eslint/no-explicit-any': ['off'],
     'max-len' : ["error", 300] ,
-    'vue/multi-word-component-names': 'warn',
+    'vue/multi-word-component-names': 'off',
     '@typescript-eslint/ban-ts-comment': 'warn',
+    '@typescript-eslint/no-non-null-assertion': 'off', // 允许使用|判空
     'no-underscore-dangle': 'off', // 允许使用下划线
     "no-param-reassign": 0,
     'no-new': 0,
+    
   },
   overrides: [
     {

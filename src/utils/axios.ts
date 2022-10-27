@@ -9,10 +9,9 @@ import {
 } from 'ant-design-vue';
 import { deleteSearchFormUndef } from '@/utils/method';
 import qs from 'qs';
-import { useRouter } from 'vue-router';
+import router from '@/router';
+// import { useRouter } from 'vue-router';
 import storage from './storage';
-
-const router = useRouter();
 
 const APP_TOKEN_KEY = 'APP_TOKEN_KEY';
 
@@ -61,7 +60,9 @@ const requestList: string[] = [];
 const agreeRequestAgain: string[] = [];
 
 // 不需要token的url
-const notNeedTokenUrlList: string[] = [];
+const notNeedTokenUrlList: string[] = [
+  '/home',
+];
 
 // 取消网络超时时间
 const agreeTimeOut: string[] = [];
@@ -71,7 +72,7 @@ const { CancelToken } = axios;
 const sources: ISources = {};
 
 // 请求拦截器通用配置
-const requestConfig = (config: Config): Config => {
+const requestConfig = (config: AxiosRequestConfig): Config => {
   const newConfig = config;
   if (newConfig.data && newConfig.data._JSONEMPTY_) {
     newConfig.data = config.data;
@@ -81,7 +82,7 @@ const requestConfig = (config: Config): Config => {
   }
 
   if (newConfig.data && newConfig.data._JSONTYPE_ === 'json') {
-    newConfig.headers['Content-Type'] = 'application/json;charset=utf-8';
+    newConfig.headers!['Content-Type'] = 'application/json;charset=utf-8';
     delete newConfig.data._JSONTYPE_;
   } else {
     newConfig.data = qs.stringify(newConfig.data);
@@ -106,7 +107,7 @@ const requestConfig = (config: Config): Config => {
   }
 
   if (token) {
-    newConfig.headers.Authorization = token;
+    newConfig.headers!.Authorization = token;
   }
 
   if (agreeTimeOut.includes(config.url as string)) {
@@ -190,7 +191,7 @@ const responseDownloadConfig = (res: any) => {
   }
 };
 
-const Axios = axios.create({
+export const Axios = axios.create({
   baseURL: BASEURL,
   timeout: 6000,
   responseType: 'json',

@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <ConfigProvider :theme-vars="{ blue: '#6476FF', navBarArrowSize: '1.4rem' }">
     <Suspense>
       <template #default>
@@ -22,20 +22,44 @@
       </template>
     </Suspense>
   </ConfigProvider>
+</template> -->
+<template>
+  <div>
+    <a-button>刷新</a-button>
+    <h1 v-if="error">load async component error</h1>
+    <Suspense v-else>
+      <template #default>
+        <router-view />
+      </template>
+      <template #fallback>
+        <div class="loading"></div>
+      </template>
+    </Suspense>
+  </div>
 </template>
 
 <script lang="ts">
-import { ConfigProvider } from 'ant-design-vue';
-import { defineComponent } from 'vue';
+// import { ConfigProvider } from 'ant-design-vue';
+import { defineComponent, onErrorCaptured, ref } from 'vue';
 
 export default defineComponent({
   name: '',
-  components: {
-    ConfigProvider,
+  // components: {
+  //   ConfigProvider,
+  // },
+  setup() {
+    const error = ref(null);
+    onErrorCaptured((e: any) => {
+      console.log(e);
+      error.value = e;
+      return false;
+    });
+    return {
+      error,
+    };
   },
 });
 
-console.log(22222);
 </script>
 
 <style>
