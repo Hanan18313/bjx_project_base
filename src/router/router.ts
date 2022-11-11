@@ -2,7 +2,7 @@ import { RouteRecordRaw } from 'vue-router';
 
 const requireModules = require.context('../views/', true, /index\.(jsx|tsx|vue)$/iu);
 const modules: Array<RouteRecordRaw> = requireModules.keys().map((filePath: string) => {
-  const path = filePath.toLowerCase().replace(/^\.|\/index.vue/g, '');
+  const path = filePath.toLowerCase().replace(/^\.|\/index\.(vue|tsx)/g, '');
   const name = path.replace(/^\//, '').replace(/\/(\w)/, ($0, $1) => $1.toUpperCase());
   const component = () => import(`@/views${filePath.replace(/^\./, '')}`);
   return {

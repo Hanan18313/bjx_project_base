@@ -1,5 +1,5 @@
-import { IRootState } from '@/store/types';
 import { ActionTree, Module, MutationTree } from 'vuex';
+import { IRootState } from '@/store/types';
 import { IUserState } from './types';
 
 const state: IUserState = {
