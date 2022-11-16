@@ -1,60 +1,54 @@
 import { Form, Input, Select } from 'ant-design-vue';
-import {
-  defineComponent,
-  PropType,
-  defineProps,
-} from 'vue';
-import { IFormFieldProps, KeyParams } from './types';
+import { IFormFieldProps, KeyParams, OptionsKey } from './types';
 
 const { Option } = Select;
 
-const SelectInput = () => defineComponent({
-  props: {
-    formField: {
-      type: Object as PropType<IFormFieldProps>,
-    },
-  },
-  setup(props, ctx: any) {
-    console.log(props);
-    return () => (
-      <Form.Item label={props.formField?.name}>
-        <Select>
-          <Option>111</Option>
-          <Option>222</Option>
-        </Select>
-      </Form.Item>
-    );
-  },
-});
+const SelectInput = (props: IFormFieldProps) => {
+  const {
+    name,
+    inputConfig,
+    formConfig,
+    options,
+  } = props;
+  return (
+    <Form.Item
+      name={name}
+      {...formConfig}
+    >
+      <Select
+        {...inputConfig}
+        virtual={options && options.length > 8}
+      >
+        {
+          options?.map((option: OptionsKey) => <Option {...option} key={option.key}>{option.key}</Option>)
+        }
+      </Select>
+    </Form.Item>
+  );
+};
 
-const InputComponent = () => defineComponent({
-  props: {
-    formField: {
-      type: Object as PropType<IFormFieldProps>,
-    },
-  },
-  setup(props, ctx: any) {
-    return {
-      props,
-    };
-  },
-  render() {
-    return () => (
-      <Form.Item label={this.props.formField?.name}>
-        <Input />
-      </Form.Item>
-    );
-  },
-});
+const InputComponent = (props: IFormFieldProps) => {
+  const {
+    name,
+    formConfig,
+    inputConfig,
+  } = props;
+  return (
+    <Form.Item
+      label={name}
+      {...formConfig}
+    >
+      <Input { ...inputConfig } />
+    </Form.Item>
+  );
+};
 
-export default (props: IFormFieldProps) => {
-  console.log(props);
+export default (formFieldProps: IFormFieldProps) => {
+  const { props } = formFieldProps;
   const { type } = props;
   const typeComponent: KeyParams = {
-    SelectInput,
-    Input: InputComponent,
+    SelectInput: <SelectInput {...props} />,
+    Input: <InputComponent {...props}/>,
   };
-  // eslint-disable-next-line
-  console.log(typeComponent['Input']);
   return type && typeComponent[type];
 };
